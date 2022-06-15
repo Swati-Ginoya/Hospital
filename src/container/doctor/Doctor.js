@@ -2,7 +2,6 @@ import React from 'react';
 
 function Doctor(props) {
     return (
-        <div className="main-header">
             <section id="doctors" className="doctors">
                 <div className="container">
                     <div className="section-title">
@@ -79,7 +78,6 @@ function Doctor(props) {
                     </div>
                 </div>
             </section>
-        </div>
 
     );
 }

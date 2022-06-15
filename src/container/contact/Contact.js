@@ -2,7 +2,7 @@ import React from 'react';
 
 function Contact(props) {
     return (
-        <div className="main-header">
+        
             <section id="contact" className="contact">
                 <div className="container">
                     <div className="section-title">
@@ -60,7 +60,6 @@ function Contact(props) {
                     </div>
                 </div>
             </section>
-        </div>
 
     );
 }

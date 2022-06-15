@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import Header from './component/header/Header';
 import Home from './container/home/Home';
+import Auth from './container/auth/Auth';
 import Department from './container/department/Department';
 import Doctor from './container/doctor/Doctor';
 import About from './container/about/About';
@@ -15,6 +16,7 @@ function App() {
       <Header />
       <Switch>
         <Route path={"/"} exact component={Home}></Route>
+        <Route path={"/Auth"} exact component={Auth}></Route>
         <Route path={"/Department"} exact component={Department}></Route>
         <Route path={"/Doctor"} exact component={Doctor}></Route>
         <Route path={"/About"} exact component={About}></Route>
