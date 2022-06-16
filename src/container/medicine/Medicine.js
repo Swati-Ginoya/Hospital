@@ -75,8 +75,12 @@ function Medicine(props) {
         },
         
         ]
+    const getId = (id)=>{
+        console.log(id);
+    }
     return (
         <List 
+        getProps={getId}
          Data={orgData}
         />
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardBody, CardSubtitle, CardText, CardTitle } from 'reactstrap'
 
-function List({ Data }) {
+function List({ Data ,getProps}) {
     return (
         Data.map((o, i) => {
             return (
@@ -20,6 +20,7 @@ function List({ Data }) {
                         <CardText>
                             {o.expiry}
                         </CardText>
+                        <button onClick={()=>getProps(o.id)}>submit</button>
                     </CardBody>
                 </Card>
             )

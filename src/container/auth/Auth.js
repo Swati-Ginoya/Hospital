@@ -62,7 +62,7 @@ function Auth(props) {
                         user === 'login' ?
                         <>
                         <p className='d-inline-block pe-4'>Create new account..</p><button onClick={() => setUser('signup')}>Signup</button>
-                        <a href='#' className='d-block' onClick={() => setReset(true)}>Forget Password !</a>
+                        <a href='#' className='d-block' onClick={() => setReset(true)}>Forget Password !'</a>
                         </>
                         :
                         <>

@@ -8,6 +8,7 @@ import About from './container/about/About';
 import Contact from './container/contact/Contact';
 import Medicine from './container/medicine/Medicine';
 import Footer from './component/footer/Footer';
+import Form from './container/form/Form';
 import { Route, Switch } from 'react-router-dom';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path={"/About"} exact component={About}></Route>
         <Route path={"/Contact"} exact component={Contact}></Route>
         <Route path={"/Medicine"} exact component={Medicine}></Route>
+        <Route path={"/Form"} exact component={Form}></Route>
       </Switch>
       <Footer />
     </div>
