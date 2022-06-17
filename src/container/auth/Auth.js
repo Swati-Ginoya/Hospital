@@ -1,9 +1,29 @@
 import React, { useState } from 'react';
+import * as yup from 'yup';
+import {useFormik, Form, Formik} from "formik"
 
 function Auth(props) {
     const [user , setUser] = useState('login')
     const [reset ,setReset] = useState(false)
-    return (
+
+    let schema = yup.object().shape({
+        email: yup.string().email("Enter your email").required("Enter valid email address"),
+        password: yup.string().required("Enter your password")
+      });
+
+      const formikObj = useFormik({
+        initialValues: {
+          email: '',
+          password: ''
+        },
+        validationSchema : schema,
+        onSubmit: values => {
+          alert(JSON.stringify(values, null, 2));
+        },
+      });
+
+      const {handleChange ,errors, handleSubmit} = formikObj
+    return ( 
         <section id="appointment" className="appointment">
             <div className="container">
                 <div className="section-title">
@@ -17,7 +37,8 @@ function Auth(props) {
                         <h2>Signup</h2>
                     }
                 </div>
-                <div className="php-email-form">
+                <Formik values={formikObj}>
+                <Form onSubmit={handleSubmit} className="php-email-form">
                     <div className='row'>
                         <div className="col-md-4 form-group">
                             {
@@ -35,7 +56,10 @@ function Auth(props) {
                     </div> 
                     <div className='row'>  
                         <div className="col-md-4 form-group mt-3 mt-md-0 mb-3">
-                            <input type="email" className="form-control" name="email" id="email" placeholder="email" data-rule="email" data-msg="Please enter a email" />
+                            <input type="email" className="form-control" name="email" id="email" placeholder="email" data-rule="email" data-msg="Please enter a email"
+                            onChange={handleChange}
+                             />
+                             <p>{errors.email}</p>
                             <div className="validate" />
                         </div>
                     </div>
@@ -45,7 +69,11 @@ function Auth(props) {
                         :
                         <div className='row'>  
                         <div className="col-md-4 form-group mt-3 mt-md-0 mb-3">
-                            <input type="password" className="form-control" name="password" id="password" placeholder="Password" data-rule="password" data-msg="Please enter a password" />
+                            <input type="password" className="form-control" name="password" id="password" placeholder="Password" data-rule="password" data-msg="Please enter a password"
+                            onChange={handleChange}
+
+                            />
+                            <p>{errors.password}</p>
                             <div className="validate" />
                         </div>
                     </div>
@@ -56,7 +84,7 @@ function Auth(props) {
                     {
                         reset ?
                         <>
-                       <button onClick={() => {setReset(false) ; setUser('login')}}>login</button>
+                       <button type='submit'>login</button>
                         </>
                         :
                         user === 'login' ?
@@ -81,7 +109,8 @@ function Auth(props) {
                             <button type="submit">Signup</button>                  
                         }
                        </div> 
-                </div>
+                </Form>
+                </Formik>
             </div>
         </section>
 
