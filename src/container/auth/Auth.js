@@ -104,9 +104,9 @@ function Auth(props) {
                             <button type="submit">Submit</button>
                             :
                             user === 'login' ?
-                            <button type="submit">Login</button>
+                            <button type="submit">Submit</button>
                             :
-                            <button type="submit">Signup</button>                  
+                            <button type="submit">Submit</button>                  
                         }
                        </div> 
                 </Form>
