@@ -1,6 +1,30 @@
 import React from 'react';
+import * as yup from 'yup';
+import {useFormik ,Form ,Formik} from "formik"
 
 function Contact(props) {
+    let schema = yup.object().shape({
+        name: yup.string().required("Enter your name"),
+        email: yup.string().email("Enter valid email").required("Enter your email"),
+        subject :yup.string().required("Enter your subject"),
+        message :yup.string().required("Enter your message")
+      });
+
+      const formikObj = useFormik({
+        initialValues: {
+          email: '',
+          name : '',
+          phone : '',
+          subject : '',
+          message :''
+        },
+        validationSchema:schema,
+        onSubmit: values => {
+          alert(JSON.stringify(values, null, 2));
+        },
+      });
+      const {handleChange ,errors ,handleSubmit ,handleBlur ,touched} = formikObj
+
     return (
         
             <section id="contact" className="contact">
@@ -34,20 +58,37 @@ function Contact(props) {
                             </div>
                         </div>
                         <div className="col-lg-8 mt-5 mt-lg-0">
-                            <form action method="post" role="form" className="php-email-form">
+                            <Formik values={formikObj}>
+                            <Form onSubmit={handleSubmit} action method="post" role="form" className="php-email-form">
                                 <div className="row">
                                     <div className="col-md-6 form-group">
-                                        <input type="text" name="name" className="form-control" id="name" placeholder="Your Name" required />
+                                        <input type="text" name="name" className="form-control" id="name" placeholder="Your Name" 
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        />
+                                        <p className='text-danger'>{errors.name && touched.name? errors.name:''}</p>
                                     </div>
                                     <div className="col-md-6 form-group mt-3 mt-md-0">
-                                        <input type="email" className="form-control" name="email" id="email" placeholder="Your Email" required />
+                                        <input type="email" className="form-control" name="email" id="email" placeholder="Your Email" 
+                                         onChange={handleChange}
+                                         onBlur={handleBlur}
+                                         />
+                                         <p className='text-danger'>{errors.email && touched.email? errors.email:''}</p>
                                     </div>
                                 </div>
                                 <div className="form-group mt-3">
-                                    <input type="text" className="form-control" name="subject" id="subject" placeholder="Subject" required />
+                                    <input type="text" className="form-control" name="subject" id="subject" placeholder="Subject"
+                                     onChange={handleChange}
+                                     onBlur={handleBlur}
+                                     />
+                                     <p className='text-danger'>{errors.subject && touched.subject? errors.subject:''}</p>
                                 </div>
                                 <div className="form-group mt-3">
-                                    <textarea className="form-control" name="message" rows={5} placeholder="Message" required defaultValue={""} />
+                                    <textarea className="form-control" name="message" rows={5} placeholder="Message" defaultValue={""} 
+                                     onChange={handleChange}
+                                     onBlur={handleBlur}
+                                     />
+                                     <p className='text-danger'>{errors.message && touched.message? errors.message:''}</p>
                                 </div>
                                 <div className="my-3">
                                     <div className="loading">Loading</div>
@@ -55,7 +96,8 @@ function Contact(props) {
                                     <div className="sent-message">Your message has been sent. Thank you!</div>
                                 </div>
                                 <div className="text-center"><button type="submit">Send Message</button></div>
-                            </form>
+                            </Form>
+                            </Formik>
                         </div>
                     </div>
                 </div>
