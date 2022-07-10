@@ -5,7 +5,7 @@ import {Card ,CardBody ,CardTitle ,CardSubtitle ,CardText ,Button} from 'reactst
 
 function ListAppointment(props) {
     const history = useHistory();
-    let [data, setData] = useState([]);
+    const [data, setData] = useState([]);
 
     const getData = () =>  {
         let localData = JSON.parse(localStorage.getItem("BookAppointment"));
@@ -26,6 +26,12 @@ function ListAppointment(props) {
             getData();
         }
 
+        const handleEdit = (id) =>{
+            let localData = JSON.parse(localStorage.getItem("BookAppointment"));
+            console.log(localData);
+            
+            history.push("/BookAppointment" ,{id:id})
+        }
     return (
         <section id="appointment" className="appointment">
             <div className="container">
@@ -44,7 +50,7 @@ function ListAppointment(props) {
                    data.map ((d ,i) =>{
                     return(
                         
-                    <Card>
+                    <Card key={i}>
                         <CardBody>
                             <CardTitle tag="h5">
                               {d.name}
@@ -60,7 +66,7 @@ function ListAppointment(props) {
                                 <br/>
                                 {d.date}
                             </CardText>
-                            <Button>
+                            <Button onClick={() => handleEdit(d.id)}>
                                 Update
                             </Button>
                             <Button className="ms-3" onClick={() => handleDelete(d.id)}>

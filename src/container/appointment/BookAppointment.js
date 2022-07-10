@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { useFormik, Form, Formik } from "formik";
 import { NavLink, useHistory } from 'react-router-dom';
 
 function BookAppointment(props) {
     const history = useHistory();
+    const [update ,setUpDate] = useState(false);
 
     let schema = yup.object().shape({
         name: yup.string().required("Enter your name"),
@@ -35,7 +36,7 @@ function BookAppointment(props) {
         }
 
         history.push("/ListAppointment");
-
+        setUpDate(true)
     }
 
     const formikObj = useFormik({
@@ -53,7 +54,12 @@ function BookAppointment(props) {
         },
     });
 
-    const { handleChange, errors, handleSubmit, handleBlur, touched } = formikObj
+    useEffect(() => {
+        setUpDate(true)
+    }
+    ,[])
+  
+    const { handleChange, errors, handleSubmit, handleBlur, touched ,values} = formikObj
     return (
         <section id="appointment" className="appointment">
             <div className="container">
@@ -72,7 +78,13 @@ function BookAppointment(props) {
                     <Form onSubmit={handleSubmit} action method="post" role="form" className="php-email-form mt-5">
                         <div className="row">
                             <div className="col-md-4 form-group">
-                                <input type="text" name="name" className="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars"
+                                <input 
+                                value={values.name}
+                                type="text" 
+                                name="name" 
+                                className="form-control" 
+                                id="name" 
+                                placeholder="Your Name"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
@@ -80,7 +92,13 @@ function BookAppointment(props) {
                                 <div className="validate" />
                             </div>
                             <div className="col-md-4 form-group mt-3 mt-md-0">
-                                <input type="email" className="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email"
+                                <input
+                                value={values.email} 
+                                type="email" 
+                                className="form-control" 
+                                name="email" 
+                                id="email" 
+                                placeholder="Your Email" 
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
@@ -88,7 +106,13 @@ function BookAppointment(props) {
                                 <div className="validate" />
                             </div>
                             <div className="col-md-4 form-group mt-3 mt-md-0">
-                                <input type="tel" className="form-control" name="phone" id="phone" placeholder="Your Phone" data-rule="minlen:4" data-msg="Please enter at least 4 chars"
+                                <input 
+                                value={values.phone}
+                                type="tel" 
+                                className="form-control" 
+                                name="phone" 
+                                id="phone" 
+                                placeholder="Your Phone" 
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
@@ -98,12 +122,24 @@ function BookAppointment(props) {
                         </div>
                         <div className="row">
                             <div className="col-md-4 form-group mt-3">
-                                <input type="date" name="date" className="form-control datepicker" id="date" placeholder="Appointment Date" data-rule="minlen:4" data-msg="Please enter at least 4 chars" onChange={handleChange} onBlur={handleBlur} />
+                                <input 
+                                value={values.date}
+                                type="date" 
+                                name="date" 
+                                className="form-control datepicker" 
+                                id="date" 
+                                placeholder="Appointment Date" 
+                                 onChange={handleChange} onBlur={handleBlur} />
                                 <p className='text-danger'>{errors.date && touched.date ? errors.date : ''}</p>
                                 <div className="validate" />
                             </div>
                             <div className="col-md-4 form-group mt-3">
-                                <select name="department" id="department" className="form-select" onChange={handleChange} onBlur={handleBlur}>
+                                <select 
+                                value={values.department}
+                                name="department" 
+                                id="department" 
+                                className="form-select" 
+                                onChange={handleChange} onBlur={handleBlur}>
                                     <option value>Select Department</option>
                                     <option value="Department 1">Department 1</option>
                                     <option value="Department 2">Department 2</option>
@@ -114,7 +150,13 @@ function BookAppointment(props) {
                             </div>
                         </div>
                         <div className="form-group mt-3">
-                            <textarea className="form-control" name="message" rows={5} placeholder="Message" defaultValue={""} onChange={handleChange} onBlur={handleBlur} />
+                            <textarea 
+                            value={values.message}
+                            className="form-control" 
+                            name="message" 
+                            rows={5} 
+                            placeholder="Message" 
+                             onChange={handleChange} onBlur={handleBlur} />
                             <p className='text-danger'>{errors.message && touched.message ? errors.message : ''}</p>
                             <div className="validate" />
                         </div>
@@ -123,7 +165,14 @@ function BookAppointment(props) {
                             <div className="error-message" />
                             <div className="sent-message">Your appointment request has been sent successfully. Thank you!</div>
                         </div>
-                        <div className="text-center"><button type="submit">Make an Appointment</button></div>
+                        <div className="text-center">
+                            {
+                                update ?
+                                <button type="submit">Update an Appointment</button>
+                                :
+                                <button type="submit">Make an Appointment</button>
+                            }
+                            </div>
                     </Form>
                 </Formik>
             </div>
