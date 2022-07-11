@@ -5,7 +5,7 @@ import { NavLink, useHistory } from 'react-router-dom';
 
 function BookAppointment(props) {
     const history = useHistory();
-    const [update ,setUpDate] = useState(false);
+    const [update, setUpDate] = useState(false);
 
     let schema = yup.object().shape({
         name: yup.string().required("Enter your name"),
@@ -16,6 +16,23 @@ function BookAppointment(props) {
         message: yup.string().required("Enter your message"),
     });
 
+    const handleUpdate = (values) => {
+        let localData = JSON.parse(localStorage.getItem('BookAppointment'));
+
+        let uData = localData.map((d) => {
+            if (d.id === values.id) {
+                return values;
+            } else {
+                return d;
+            }
+        })
+        localStorage.setItem('BookAppointment', JSON.stringify(uData))
+
+        history.replace();
+        setUpDate(false);
+        formikObj.resetForm();
+        history.push('ListAppointment')
+    }
     const insertData = (values) => {
         let localData = JSON.parse(localStorage.getItem('BookAppointment'));
 
@@ -36,7 +53,6 @@ function BookAppointment(props) {
         }
 
         history.push("/ListAppointment");
-        setUpDate(true)
     }
 
     const formikObj = useFormik({
@@ -50,21 +66,38 @@ function BookAppointment(props) {
         },
         validationSchema: schema,
         onSubmit: values => {
-            insertData(values);
+            if (update) {
+                handleUpdate(values)
+            } else {
+                insertData(values);
+            }
+
         },
     });
 
     useEffect(() => {
-        setUpDate(true)
+        let localData = JSON.parse(localStorage.getItem('BookAppointment'));
+
+        if (props.location.state && localData !== null) {
+            let fData = localData.filter((d) => d.id === props.location.state.id);
+            formikObj.setValues(fData[0])
+            setUpDate(true)
+        }
     }
-    ,[])
-  
-    const { handleChange, errors, handleSubmit, handleBlur, touched ,values} = formikObj
+        , [])
+
+    const { handleChange, errors, handleSubmit, handleBlur, touched, values } = formikObj
     return (
         <section id="appointment" className="appointment">
             <div className="container">
                 <div className="section-title">
-                    <h2>Manage an Appointment</h2>
+                    {
+                        update ?
+                            <h2>Update an Appointment</h2>
+                            :
+                            <h2>Manage an Appointment</h2>
+                    }
+
                 </div>
                 <div className='row'>
                     <div className='col-6'>
@@ -78,13 +111,13 @@ function BookAppointment(props) {
                     <Form onSubmit={handleSubmit} action method="post" role="form" className="php-email-form mt-5">
                         <div className="row">
                             <div className="col-md-4 form-group">
-                                <input 
-                                value={values.name}
-                                type="text" 
-                                name="name" 
-                                className="form-control" 
-                                id="name" 
-                                placeholder="Your Name"
+                                <input
+                                    value={values.name}
+                                    type="text"
+                                    name="name"
+                                    className="form-control"
+                                    id="name"
+                                    placeholder="Your Name"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
@@ -93,12 +126,12 @@ function BookAppointment(props) {
                             </div>
                             <div className="col-md-4 form-group mt-3 mt-md-0">
                                 <input
-                                value={values.email} 
-                                type="email" 
-                                className="form-control" 
-                                name="email" 
-                                id="email" 
-                                placeholder="Your Email" 
+                                    value={values.email}
+                                    type="email"
+                                    className="form-control"
+                                    name="email"
+                                    id="email"
+                                    placeholder="Your Email"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
@@ -106,13 +139,13 @@ function BookAppointment(props) {
                                 <div className="validate" />
                             </div>
                             <div className="col-md-4 form-group mt-3 mt-md-0">
-                                <input 
-                                value={values.phone}
-                                type="tel" 
-                                className="form-control" 
-                                name="phone" 
-                                id="phone" 
-                                placeholder="Your Phone" 
+                                <input
+                                    value={values.phone}
+                                    type="tel"
+                                    className="form-control"
+                                    name="phone"
+                                    id="phone"
+                                    placeholder="Your Phone"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
@@ -122,24 +155,24 @@ function BookAppointment(props) {
                         </div>
                         <div className="row">
                             <div className="col-md-4 form-group mt-3">
-                                <input 
-                                value={values.date}
-                                type="date" 
-                                name="date" 
-                                className="form-control datepicker" 
-                                id="date" 
-                                placeholder="Appointment Date" 
-                                 onChange={handleChange} onBlur={handleBlur} />
+                                <input
+                                    value={values.date}
+                                    type="date"
+                                    name="date"
+                                    className="form-control datepicker"
+                                    id="date"
+                                    placeholder="Appointment Date"
+                                    onChange={handleChange} onBlur={handleBlur} />
                                 <p className='text-danger'>{errors.date && touched.date ? errors.date : ''}</p>
                                 <div className="validate" />
                             </div>
                             <div className="col-md-4 form-group mt-3">
-                                <select 
-                                value={values.department}
-                                name="department" 
-                                id="department" 
-                                className="form-select" 
-                                onChange={handleChange} onBlur={handleBlur}>
+                                <select
+                                    value={values.department}
+                                    name="department"
+                                    id="department"
+                                    className="form-select"
+                                    onChange={handleChange} onBlur={handleBlur}>
                                     <option value>Select Department</option>
                                     <option value="Department 1">Department 1</option>
                                     <option value="Department 2">Department 2</option>
@@ -150,13 +183,13 @@ function BookAppointment(props) {
                             </div>
                         </div>
                         <div className="form-group mt-3">
-                            <textarea 
-                            value={values.message}
-                            className="form-control" 
-                            name="message" 
-                            rows={5} 
-                            placeholder="Message" 
-                             onChange={handleChange} onBlur={handleBlur} />
+                            <textarea
+                                value={values.message}
+                                className="form-control"
+                                name="message"
+                                rows={5}
+                                placeholder="Message"
+                                onChange={handleChange} onBlur={handleBlur} />
                             <p className='text-danger'>{errors.message && touched.message ? errors.message : ''}</p>
                             <div className="validate" />
                         </div>
@@ -168,11 +201,11 @@ function BookAppointment(props) {
                         <div className="text-center">
                             {
                                 update ?
-                                <button type="submit">Update an Appointment</button>
-                                :
-                                <button type="submit">Make an Appointment</button>
+                                    <button type="submit">Update an Appointment</button>
+                                    :
+                                    <button type="submit">Make an Appointment</button>
                             }
-                            </div>
+                        </div>
                     </Form>
                 </Formik>
             </div>

@@ -27,8 +27,7 @@ function ListAppointment(props) {
         }
 
         const handleEdit = (id) =>{
-            let localData = JSON.parse(localStorage.getItem("BookAppointment"));
-            console.log(localData);
+            console.log(id);
             
             history.push("/BookAppointment" ,{id:id})
         }
