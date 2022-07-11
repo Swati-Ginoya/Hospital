@@ -6,6 +6,11 @@ function Auth(props) {
     const [user, setUser] = useState('login')
     const [reset, setReset] = useState(false)
 
+    const handleLogin = () =>{
+       localStorage.setItem("user" , '123');
+    
+    }
+
     let schemaObj, initialVal;
     if (user === 'login') {
         schemaObj = {
@@ -47,7 +52,12 @@ function Auth(props) {
         initialValues: initialVal,
         validationSchema: schema,
         onSubmit: values => {
-            insertData(values);
+            if(user === 'login'){
+                handleLogin();
+            }else{
+                insertData(values);
+            }
+            
         },
         enableReinitialize: true
     });

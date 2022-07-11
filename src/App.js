@@ -12,22 +12,24 @@ import ListAppointment from './container/appointment/ListAppointment';
 import Footer from './component/footer/Footer';
 import Form from './container/form/Form';
 import { Route, Switch } from 'react-router-dom';
+import PublicRoute from './route/PublicRoute';
+import PrivateRoute from './route/PrivateRoute';
 
 function App() {
   return (
     <div className="App">
       <Header />
       <Switch>
-        <Route path={"/"} exact component={Home}></Route>
-        <Route path={"/Auth"} exact component={Auth}></Route>
-        <Route path={"/Department"} exact component={Department}></Route>
-        <Route path={"/Doctor"} exact component={Doctor}></Route>
-        <Route path={"/About"} exact component={About}></Route>
-        <Route path={"/Contact"} exact component={Contact}></Route>
-        <Route path={"/Medicine"} exact component={Medicine}></Route>
-        <Route path={"/BookAppointment"} exact component={BookAppointment}></Route>
-        <Route path={"/ListAppointment"} exact component={ListAppointment}></Route>
-        <Route path={"/Form"} exact component={Form}></Route>
+        <PublicRoute path={"/"} exact component={Home}></PublicRoute>
+        <PublicRoute path={"/Auth"} restricted={true} exact component={Auth}></PublicRoute>
+        <PublicRoute path={"/Department"} exact component={Department}></PublicRoute>
+        <PrivateRoute path={"/Doctor"} exact component={Doctor}></PrivateRoute>
+        <PublicRoute path={"/About"} exact component={About}></PublicRoute>
+        <PublicRoute path={"/Contact"} exact component={Contact}></PublicRoute>
+        <PrivateRoute path={"/Medicine"} exact component={Medicine}></PrivateRoute>
+        <PrivateRoute path={"/BookAppointment"} exact component={BookAppointment}></PrivateRoute>
+        <PrivateRoute path={"/ListAppointment"} exact component={ListAppointment}></PrivateRoute>
+        <PublicRoute path={"/Form"} exact component={Form}></PublicRoute>
       </Switch>
       <Footer />
     </div>
