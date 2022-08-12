@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import * as yup from 'yup';
 import { useFormik, Form, Formik } from "formik"
+import { ThemeContext } from '../../context/ThemeContext';
 
 function Auth(props) {
+    const value = useContext(ThemeContext)
     const [user, setUser] = useState('login')
     const [reset, setReset] = useState(false)
 
@@ -64,8 +66,8 @@ function Auth(props) {
 
     const { handleChange, errors, handleSubmit, handleBlur, touched } = formikObj
     return (
-        <section id="appointment" className="appointment">
-            <div className="container">
+        <section id="appointment" className={`appointment ${value.theme}`}>
+            <div className={`container ${value.theme}` }>
                 <div className="section-title">
                     {
                         reset ?

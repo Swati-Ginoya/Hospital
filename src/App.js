@@ -14,10 +14,13 @@ import Form from './container/form/Form';
 import { Route, Switch } from 'react-router-dom';
 import PublicRoute from './route/PublicRoute';
 import PrivateRoute from './route/PrivateRoute';
+import MedicineForm from './container/medicine-form/MedicineForm';
+import ThemeProvider from './context/ThemeContext';
 
 function App() {
   return (
     <div className="App">
+      <ThemeProvider>
       <Header />
       <Switch>
         <PublicRoute path={"/"} exact component={Home}></PublicRoute>
@@ -29,9 +32,11 @@ function App() {
         <PrivateRoute path={"/Medicine"} exact component={Medicine}></PrivateRoute>
         <PrivateRoute path={"/BookAppointment"} exact component={BookAppointment}></PrivateRoute>
         <PrivateRoute path={"/ListAppointment"} exact component={ListAppointment}></PrivateRoute>
+        <Route path={"/MedicineForm"} exact component={MedicineForm}></Route>
         <PublicRoute path={"/Form"} exact component={Form}></PublicRoute>
       </Switch>
       <Footer />
+      </ThemeProvider>
     </div>
   );
 }

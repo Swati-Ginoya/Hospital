@@ -1752,3 +1752,12 @@ section {
 .main-header {
   height: 138px;
 }
+
+.dark{
+  color: #fff !important;
+  background-color: #000 !important;
+}
+.light{
+  color: #000 !important;
+  background-color: #fff !important;
+}
