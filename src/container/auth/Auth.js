@@ -2,6 +2,8 @@ import React, { useContext, useState } from 'react';
 import * as yup from 'yup';
 import { useFormik, Form, Formik } from "formik"
 import { ThemeContext } from '../../context/ThemeContext';
+import { useDispatch } from 'react-redux';
+import { signUpAction } from '../../redux/action/AuthAction';
 
 function Auth(props) {
     const value = useContext(ThemeContext)
@@ -50,6 +52,7 @@ function Auth(props) {
         }
     }
 
+    const dispatch = useDispatch()
     const formikObj = useFormik({
         initialValues: initialVal,
         validationSchema: schema,
@@ -59,7 +62,7 @@ function Auth(props) {
             }else{
                 insertData(values);
             }
-            
+            dispatch(signUpAction(values))
         },
         enableReinitialize: true
     });
