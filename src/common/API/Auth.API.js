@@ -11,6 +11,7 @@ export const signUpApi = (data) => {
       .then((userCredential) => {
 
         const user = userCredential.user;
+        
         console.log(user);
         onAuthStateChanged(auth, (user) => {
           sendEmailVerification(user)
