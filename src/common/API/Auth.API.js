@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/Firebase";
 
 
@@ -11,17 +11,17 @@ export const signUpApi = (data) => {
       .then((userCredential) => {
 
         const user = userCredential.user;
-        
+
         console.log(user);
         onAuthStateChanged(auth, (user) => {
           sendEmailVerification(user)
             .then(() => {
               resolve({ payload: "Check your E-mail address" })
-        
+
             })
             .catch((e) => {
               reject({ payload: e })
-              
+
             })
         })
       })
@@ -29,7 +29,7 @@ export const signUpApi = (data) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         if (errorCode.localeCompare("auth/email-already-in-use") === 0) {
-          reject({ payload: "This E-mail address is already exist" })
+          resolve({ payload: "This E-mail address is already exist" })
           console.log("This E-mail is already exist");
         } else {
           reject({ payload: errorMessage })
@@ -39,4 +39,34 @@ export const signUpApi = (data) => {
   })
 
 
+}
+
+export const signInApi = (data) => {
+  console.log("signInApi", data);
+
+  return new Promise((resolve, reject) => {
+
+    signInWithEmailAndPassword(auth, data.email, data.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        if (user.emailVerified) {
+          resolve({ payload: "Check your E-mail address" })
+          console.log("wretwewew");
+        } else {
+          reject("error")
+          console.log("error");
+        }
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        if (errorCode.localeCompare("auth/email-already-in-use") === 0) {
+          resolve({ payload: "E-mail or password is wrong" })
+          console.log("E-mail or password is wrong");
+        } else {
+          reject({ payload: errorMessage })
+        }
+      });
+
+  })
 }

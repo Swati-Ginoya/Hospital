@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import { useFormik, Form, Formik } from "formik"
 import { ThemeContext } from '../../context/ThemeContext';
 import { useDispatch } from 'react-redux';
-import { signUpAction } from '../../redux/action/AuthAction';
+import { signInAction, signUpAction } from '../../redux/action/AuthAction';
 
 function Auth(props) {
     const value = useContext(ThemeContext)
@@ -57,12 +57,13 @@ function Auth(props) {
         initialValues: initialVal,
         validationSchema: schema,
         onSubmit: values => {
-            if(user === 'login'){
-                handleLogin();
-            }else{
-                insertData(values);
-            }
+            // if(user === 'login'){
+            //     handleLogin();
+            // }else{
+            //     insertData(values);
+            // }
             dispatch(signUpAction(values))
+            dispatch(signInAction(values))
         },
         enableReinitialize: true
     });
