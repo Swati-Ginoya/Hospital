@@ -27,7 +27,7 @@ export const signUpApi = (data) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        if (errorCode.localeCompare("auth/email-already-in-use") == 0) {
+        if (errorCode.localeCompare("auth/email-already-in-use") === 0) {
           reject({ payload: "This E-mail address is already exist" })
           console.log("This E-mail is already exist");
         } else {
