@@ -18,29 +18,33 @@ import MedicineForm from './container/medicine-form/MedicineForm';
 import ThemeProvider from './context/ThemeContext';
 import { Provider } from 'react-redux';
 import { store } from './redux/Store';
+import { SnackbarProvider } from 'notistack';
 
 function App() {
   return (
     <div className="App">
-      <Provider store={store}>
-      <ThemeProvider>
-      <Header />
-      <Switch>
-        <PublicRoute path={"/"} exact component={Home}></PublicRoute>
-        <PublicRoute path={"/Auth"} restricted={true} exact component={Auth}></PublicRoute>
-        <PublicRoute path={"/Department"} exact component={Department}></PublicRoute>
-        <PrivateRoute path={"/Doctor"} exact component={Doctor}></PrivateRoute>
-        <PublicRoute path={"/About"} exact component={About}></PublicRoute>
-        <PublicRoute path={"/Contact"} exact component={Contact}></PublicRoute>
-        <PrivateRoute path={"/Medicine"} exact component={Medicine}></PrivateRoute>
-        <PrivateRoute path={"/BookAppointment"} exact component={BookAppointment}></PrivateRoute>
-        <PrivateRoute path={"/ListAppointment"} exact component={ListAppointment}></PrivateRoute>
-        <Route path={"/MedicineForm"} exact component={MedicineForm}></Route>
-        <PublicRoute path={"/Form"} exact component={Form}></PublicRoute>
-      </Switch>
-      <Footer />
-      </ThemeProvider>
-      </Provider>
+      <SnackbarProvider maxSnack={3}>
+        <Provider store={store}>
+          <ThemeProvider>
+            <Header />
+            <Switch>
+              <PublicRoute path={"/"} exact component={Home}></PublicRoute>
+              <PublicRoute path={"/Auth"} restricted={true} exact component={Auth}></PublicRoute>
+              <PublicRoute path={"/Department"} exact component={Department}></PublicRoute>
+              <PrivateRoute path={"/Doctor"} exact component={Doctor}></PrivateRoute>
+              <PublicRoute path={"/About"} exact component={About}></PublicRoute>
+              <PublicRoute path={"/Contact"} exact component={Contact}></PublicRoute>
+              <PrivateRoute path={"/Medicine"} exact component={Medicine}></PrivateRoute>
+              <PrivateRoute path={"/BookAppointment"} exact component={BookAppointment}></PrivateRoute>
+              <PrivateRoute path={"/ListAppointment"} exact component={ListAppointment}></PrivateRoute>
+              <Route path={"/MedicineForm"} exact component={MedicineForm}></Route>
+              <PublicRoute path={"/Form"} exact component={Form}></PublicRoute>
+            </Switch>
+            <Footer />
+          </ThemeProvider>
+        </Provider>
+      </SnackbarProvider>
+
     </div>
   );
 }

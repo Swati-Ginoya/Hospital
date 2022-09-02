@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import { useFormik, Form, Formik } from "formik"
 import { ThemeContext } from '../../context/ThemeContext';
 import { useDispatch } from 'react-redux';
-import { signInAction, signUpAction } from '../../redux/action/AuthAction';
+import { googleSignInAction, signInAction, signUpAction } from '../../redux/action/AuthAction';
 
 function Auth(props) {
     const value = useContext(ThemeContext)
@@ -13,6 +13,10 @@ function Auth(props) {
     const handleLogin = () =>{
        localStorage.setItem("user" , '123');
     
+    }
+
+    const handleGoogleSignIn = () => {
+        dispatch(googleSignInAction())
     }
 
     let schemaObj, initialVal;
@@ -57,13 +61,15 @@ function Auth(props) {
         initialValues: initialVal,
         validationSchema: schema,
         onSubmit: values => {
-            // if(user === 'login'){
-            //     handleLogin();
-            // }else{
-            //     insertData(values);
-            // }
-            dispatch(signUpAction(values))
-            dispatch(signInAction(values))
+             if(user === 'login'){
+                // handleLogin();
+                dispatch(signUpAction(values))
+            }else{
+                // insertData(values);
+                dispatch(signInAction(values))
+            }
+           
+           
         },
         enableReinitialize: true
     });
@@ -137,12 +143,12 @@ function Auth(props) {
                                     :
                                     user === 'login' ?
                                         <>
-                                            <p className='d-inline-block pe-4'>Create new account..</p><a onClick={() => setUser('signup')}>Signup</a>
+                                            <p className='d-inline-block pe-4'>Create new account..</p><a href='#' onClick={() => setUser('signup')}>Signup</a>
                                             <a href='#' className='d-block' onClick={() => setReset(true)}>Forget Password !</a>
                                         </>
                                         :
                                         <>
-                                            <p className='d-inline-block pe-4'>Already have an account ?</p><a onClick={() => setUser('login')}>Login</a>
+                                            <p className='d-inline-block pe-4'>Already have an account ?</p><a href='#' onClick={() => setUser('login')}>Login</a>
                                         </>
                             }
                         </div>
@@ -156,6 +162,8 @@ function Auth(props) {
                                         :
                                         <button type="submit">Submit</button>
                             }
+                            <h5>or</h5>
+                            <button type='submit' onClick={() => handleGoogleSignIn()}>Sign In with Google</button>
                         </div>
                     </Form>
                 </Formik>
