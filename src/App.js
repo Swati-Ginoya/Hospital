@@ -17,14 +17,16 @@ import PrivateRoute from './route/PrivateRoute';
 import MedicineForm from './container/medicine-form/MedicineForm';
 import ThemeProvider from './context/ThemeContext';
 import { Provider } from 'react-redux';
-import { store } from './redux/Store';
+import { persistor, store } from './redux/Store';
 import { SnackbarProvider } from 'notistack';
+import { PersistGate } from 'redux-persist/integration/react';
 
 function App() {
   return (
     <div className="App">
       <SnackbarProvider maxSnack={3}>
         <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
           <ThemeProvider>
             <Header />
             <Switch>
@@ -42,6 +44,7 @@ function App() {
             </Switch>
             <Footer />
           </ThemeProvider>
+          </PersistGate>
         </Provider>
       </SnackbarProvider>
 

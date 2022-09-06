@@ -1,8 +1,8 @@
 import * as ActionTypes from '../ActionType'
 
 
-export const signUpAction = (values) => (dispatch) => {
-    dispatch({type : ActionTypes.SIGNUP_USER ,payload:values})
+export const signUpAction = (data) => (dispatch) => {
+    dispatch({type : ActionTypes.SIGNUP_USER ,payload:data})
 }
 
 export const signInAction = (values) => (dispatch) => {
@@ -23,4 +23,8 @@ export const signedOutAction = () => (dispatch) =>{
 
 export const googleSignInAction = () => (dispatch) => {
     dispatch({type :ActionTypes.GOOGLESIGNIN_USER})
+}
+
+export const forgotPassWordAction = (values) => (dispatch) => {
+    dispatch({type : ActionTypes.FORGET_PASSWORD , payload : values})
 }

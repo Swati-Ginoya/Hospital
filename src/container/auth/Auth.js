@@ -3,15 +3,16 @@ import * as yup from 'yup';
 import { useFormik, Form, Formik } from "formik"
 import { ThemeContext } from '../../context/ThemeContext';
 import { useDispatch } from 'react-redux';
-import { googleSignInAction, signInAction, signUpAction } from '../../redux/action/AuthAction';
+import { forgotPassWordAction, googleSignInAction, signInAction, signUpAction } from '../../redux/action/AuthAction';
 
 function Auth(props) {
     const value = useContext(ThemeContext)
     const [user, setUser] = useState('login')
     const [reset, setReset] = useState(false)
 
-    const handleLogin = () =>{
+    const handleLogin = (values) =>{
        localStorage.setItem("user" , '123');
+    dispatch(signInAction(values))
     
     }
 
@@ -45,28 +46,32 @@ function Auth(props) {
 
 
     const insertData = (values) => {
-        let LocalData = JSON.parse(localStorage.getItem("user"));
+        // let LocalData = JSON.parse(localStorage.getItem("user"));
         console.log(values);
 
-        if (LocalData === null) {
-            localStorage.setItem("user", JSON.stringify([values]));
-        } else {
-            LocalData.push(values);
-            localStorage.setItem("user", JSON.stringify(LocalData));
-        }
+        // if (LocalData === null) {
+        //     localStorage.setItem("user", JSON.stringify([values]));
+        // } else {
+        //     LocalData.push(values);
+        //     localStorage.setItem("user", JSON.stringify(LocalData));
+        // }
+        dispatch(signUpAction(values))
     }
+
 
     const dispatch = useDispatch()
     const formikObj = useFormik({
         initialValues: initialVal,
         validationSchema: schema,
         onSubmit: values => {
-             if(user === 'login'){
-                // handleLogin();
-                dispatch(signUpAction(values))
-            }else{
-                // insertData(values);
-                dispatch(signInAction(values))
+             if(user === 'login' && reset == false){
+                handleLogin(values);
+                // dispatch(signInAction(values))
+            }else if(user === 'signup' && reset == false){
+                insertData(values);
+                // dispatch(signUpAction(values))
+            }else if (reset === true){
+                dispatch(forgotPassWordAction(values))
             }
            
            
@@ -75,6 +80,8 @@ function Auth(props) {
     });
 
     const { handleChange, errors, handleSubmit, handleBlur, touched } = formikObj
+
+    console.log(errors);
     return (
         <section id="appointment" className={`appointment ${value.theme}`}>
             <div className={`container ${value.theme}` }>

@@ -1,10 +1,9 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup ,GoogleAuthProvider  } from "firebase/auth";
-import { auth, provider } from "../../firebase/Firebase";
-import { setAlert } from "../../redux/action/AlertAction";
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail ,sendEmailVerification, signInWithEmailAndPassword, signInWithPopup ,GoogleAuthProvider, signOut  } from "firebase/auth";
+import { auth} from "../../firebase/Firebase";
 
 
 export const signUpApi = (data) => {
-  // console.log("SignupApi", data);
+  console.log("SignupApi", data);
 
   return new Promise((resolve, reject) => {
 
@@ -15,9 +14,9 @@ export const signUpApi = (data) => {
 
         console.log(user);
         onAuthStateChanged(auth, (user) => {
-          sendEmailVerification(user)
+          sendEmailVerification(auth.currentUser)
             .then(() => {
-              // resolve({ payload: "Check your E-mail address" })
+               resolve({ payload: "Check your E-mail address" })
               // yield put(setAlert({text:"check your E-mail address"}))
             })
             .catch((e) => {
@@ -29,14 +28,11 @@ export const signUpApi = (data) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        if (errorCode.localeCompare("auth/email-already-in-use") === 0) {
-          resolve({ payload: "This E-mail address is already exist" })
-          // console.log("This E-mail is already exist");
+        if (errorCode.localeCompare("auth/email-already-in-use") == 0) {
+          reject({ payload: "This E-mail address is already verified" })
         } else {
-          reject({ payload: errorMessage })
+          reject({ payload: errorCode })
         }
-
-        reject({payload : "This mail is already exits "})
       });
   })
 
@@ -51,22 +47,22 @@ export const signInApi = (data) => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         const user = userCredential.user;
+
         if (user.emailVerified) {
           resolve({ payload:user })
         } else {
-          reject({payload:"error"})
+          resolve({payload:"Login successfully"})
         }
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        if (errorCode.localeCompare("auth/email-already-in-use") === 0) {
-          reject({ payload: "Successfully Login" })
+        if (errorCode.localeCompare("auth/wrong-password") == 0) {
+          reject({ payload: "Email or password wrong" })
           // console.log("Successfully login");
         } else {
-          reject({ payload: errorMessage })
+          reject({ payload: errorCode })
         }
-        reject({payload :error.code})
       });
 
   })
@@ -74,7 +70,13 @@ export const signInApi = (data) => {
 
 export const signOutApi = () => {
   return new Promise((resolve ,reject) => {
-
+    signOut(auth)
+    .then(() => {
+      resolve({payload:"logout success"})
+    })
+    .catch(() => {
+      reject({payload:"something is wrong"})
+    })
   })
 }
 
@@ -82,6 +84,7 @@ export const googleSignInApi = () => {
 
   return new Promise ((resolve ,reject) => {
   const provider = new GoogleAuthProvider();
+
     signInWithPopup(auth, provider)
   .then((result) => {
     const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -94,7 +97,24 @@ export const googleSignInApi = () => {
     const errorMessage = error.message;
     const email = error.customData.email;
     const credential = GoogleAuthProvider.credentialFromError(error);
-    reject({payload:errorCode})
+    reject({payload:error})
   });
+  })
+}
+
+export const forgetpwdApi = (data) => {
+  console.log(data);
+
+  return new Promise((resolve, reject) => {
+      sendPasswordResetEmail(auth, data.email)
+          .then(() => {
+              resolve({payload : "Forgot PassWord SuccessFully and Check Your Email"})
+          })
+          .catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              reject({payload : "Email Is Wrong"})
+              console.log(errorCode);
+          });
   })
 }

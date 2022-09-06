@@ -6,7 +6,6 @@ import { resetAlert } from '../../redux/action/AlertAction';
 function Alert(props) {
 
     const alert = useSelector(state => state.alert)
-    console.log(alert);
     const dispatch = useDispatch()
 
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -20,8 +19,9 @@ function Alert(props) {
                   horizontal: 'right'
                 }
         })  
+        setTimeout(() => {dispatch(resetAlert())}, 2000);
         }
-          setTimeout(() => {dispatch(resetAlert())}, 2000);
+          
     } ,[alert.text])
     return (
         <div>
