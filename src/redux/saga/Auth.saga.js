@@ -24,7 +24,7 @@ function* signIn(action) {
       const user = yield call(signInApi ,action.payload)
       yield put(signedInAction(user))
       history.push("/")
-      yield put(setAlert({text:"login Siccessfull",color: "success"}))
+      yield put(setAlert({text:"login Successfull",color: "success"}))
       // console.log(user);
    }catch(e){
       yield put(setAlert({text:e.payload ,color : "error"}))
@@ -59,7 +59,7 @@ function* forgetPassword(action) {
      const user = yield call(forgetpwdApi, action.payload)
      yield put(signedOutAction(user))
      history.push('/');
-     yield put(setAlert({ text: user.payload, color: "success" }))
+     yield put(setAlert({ text:user.payload, color: "success" }))
      console.log(user);
    } catch (e) {
      yield put(setAlert({ text: e.payload, color: "error" }))

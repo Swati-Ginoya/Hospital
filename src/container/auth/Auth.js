@@ -21,7 +21,7 @@ function Auth(props) {
     }
 
     let schemaObj, initialVal;
-    if (user === 'login') {
+    if (user === 'login' && reset === false) {
         schemaObj = {
             email: yup.string().email("Enter your email").required("Enter valid email address"),
             password: yup.string().required("Enter your password")
@@ -30,7 +30,7 @@ function Auth(props) {
             email: '',
             password: ''
         }
-    } else if (user === 'signup') {
+    } else if (user === 'signup' && reset === false) {
         schemaObj = {
             name: yup.string().required("Enter your name"),
             email: yup.string().email("Enter valid  email address").required("Enter your email address"),
@@ -40,6 +40,14 @@ function Auth(props) {
             name: '',
             email: '',
             password: ''
+        }
+    }else if (reset === true) {
+        schemaObj = {
+            email: yup.string().email("Enter valid  email address").required("Enter your email address"),
+        }
+        initialVal = {
+          
+            email: '',
         }
     }
     let schema = yup.object().shape(schemaObj);
@@ -81,7 +89,7 @@ function Auth(props) {
 
     const { handleChange, errors, handleSubmit, handleBlur, touched } = formikObj
 
-    console.log(errors);
+    // console.log(errors);
     return (
         <section id="appointment" className={`appointment ${value.theme}`}>
             <div className={`container ${value.theme}` }>
@@ -151,7 +159,7 @@ function Auth(props) {
                                     user === 'login' ?
                                         <>
                                             <p className='d-inline-block pe-4'>Create new account..</p><a href='#' onClick={() => setUser('signup')}>Signup</a>
-                                            <a href='#' className='d-block' onClick={() => setReset(true)}>Forget Password !</a>
+                                            <button type='submit' href='#' className='d-block' onClick={() => setReset(true)}>Forget Password !</button>
                                         </>
                                         :
                                         <>
