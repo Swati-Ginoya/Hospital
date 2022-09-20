@@ -1,5 +1,5 @@
 import { createContext, useReducer } from "react";
-import { Theme_Reducer, theme_Reducer } from "./reducer/Themereducer";
+import { Theme_Reducer} from "./reducer/Themereducer";
 import { TOOGLE_THEME } from "./ActionTypes";
 
 export const ThemeContext =  createContext()
